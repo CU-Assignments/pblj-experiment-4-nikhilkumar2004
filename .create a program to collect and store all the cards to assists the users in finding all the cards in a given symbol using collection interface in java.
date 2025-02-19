@@ -1,0 +1,119 @@
+import java.util.*;
+
+class Card {
+    private String rank;
+    private String suit;
+
+    public Card(String rank, String suit) {
+        this.rank = rank;
+        this.suit = suit;
+    }
+
+    public String getRank() {
+        return rank;
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    @Override
+    public String toString() {
+        return rank + " of " + suit;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Card card = (Card) obj;
+        return rank.equals(card.rank) && suit.equals(card.suit);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(rank, suit);
+    }
+}
+
+public class CardDeck {
+
+    private Set<Card> deck = new HashSet<>();
+
+    // Initialize deck with 52 cards
+    public void initializeDeck() {
+        String[] suits = {"Hearts", "Diamonds", "Clubs", "Spades"};
+        String[] ranks = {"2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"};
+
+        for (String suit : suits) {
+            for (String rank : ranks) {
+                deck.add(new Card(rank, suit));
+            }
+        }
+    }
+
+    // Display all cards
+    public void displayAllCards() {
+        if (deck.isEmpty()) {
+            System.out.println("Deck is empty.");
+        } else {
+            System.out.println("All cards in the deck:");
+            for (Card card : deck) {
+                System.out.println(card);
+            }
+        }
+    }
+
+    // Find all cards of a given suit
+    public void findCardsBySuit(String suit) {
+        Set<Card> cardsOfSuit = new HashSet<>();
+        for (Card card : deck) {
+            if (card.getSuit().equalsIgnoreCase(suit)) {
+                cardsOfSuit.add(card);
+            }
+        }
+
+        if (cardsOfSuit.isEmpty()) {
+            System.out.println("No cards found with the suit: " + suit);
+        } else {
+            System.out.println("Cards with the suit of " + suit + ":");
+            for (Card card : cardsOfSuit) {
+                System.out.println(card);
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        CardDeck cardDeck = new CardDeck();
+
+        // Initialize the deck
+        cardDeck.initializeDeck();
+
+        while (true) {
+            System.out.println("\nCard Deck Management");
+            System.out.println("1. Display all cards");
+            System.out.println("2. Find all cards of a specific suit");
+            System.out.println("3. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    cardDeck.displayAllCards();
+                    break;
+                case 2:
+                    System.out.print("Enter the suit to search (Hearts, Diamonds, Clubs, Spades): ");
+                    String suit = scanner.nextLine();
+                    cardDeck.findCardsBySuit(suit);
+                    break;
+                case 3:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid option. Please try again.");
+            }
+        }
+    }
+}
